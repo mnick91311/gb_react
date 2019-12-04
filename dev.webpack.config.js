@@ -4,9 +4,9 @@ const webpack = require('webpack')
 const buildConfig = require('./webpack.config.js')
 
 module.exports = {
-	...buildConfig,
-	mode: 'development',
-	devServer: {
-		writeToDisk: true,
-	}
+    ...buildConfig,
+    mode: 'development',
+    devServer: {
+        writeToDisk: true,
+    }
 }
