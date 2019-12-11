@@ -1,5 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './components/MessageField'
+import Layout from './components/Layout'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+import 'normalize.css'
+import './style.css'
+
+ReactDOM.render(<Layout />, document.getElementById('root'))
