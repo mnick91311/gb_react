@@ -29,6 +29,14 @@ module.exports = {
                     presets: ['@babel/env', '@babel/react'],
                 }
             },
+            {
+                test: /\.css$/,
+                loader: 'style-loader!css-loader',
+            }
         ],
     },
+    plugins: [
+        // Ignore all locale files of moment.js
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    ],
 }
