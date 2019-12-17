@@ -1,14 +1,55 @@
 import React from 'react'
-import {List, ListItem} from 'material-ui/List';
+import { Link } from 'react-router-dom'
+import { List, ListItem } from 'material-ui/List'
+import ContentSend from 'material-ui/svg-icons/content/send'
+import TextField from './TextField'
 
-export default () => (
-    <div className="chat-list">
-        <List>
-            <ListItem primaryText="Chat 1" />
-            <ListItem primaryText="Chat 2" />
-            <ListItem primaryText="Chat 3" />
-            <ListItem primaryText="Chat 4" />
-            <ListItem primaryText="Chat 5" />
-        </List>
-    </div>
-)
+export default class ChatList extends React.Component {
+    static defaultProps = {
+        chats: {}
+    }
+
+    state = {
+        input: '',
+    }
+
+    handleChange = (e) => {
+        this.setState({
+            input: e.target.value
+        })
+    }
+
+    handleAddChat = (e) => {
+        e.preventDefault()
+        this.props.addChat(this.state.input)
+        this.setState({input: ''})
+    }
+
+    render() {
+        const listElements = Object.keys(this.props.chats).map( id => (
+            <Link to={`/chat/${id}`}>
+                <ListItem
+                    primaryText={ this.props.chats[id].title }
+                    leftIcon={<ContentSend />}
+                    />
+            </Link>
+        ))
+        return (
+            <div className="chat-list">
+                <List>
+                    { listElements }
+                </List>
+                <form onSubmit={ this.handleAddChat } >
+                    <TextField 
+                        name="newChatTitle"
+                        type="text"
+                        fullWidth
+                        placeholder="New chat title"
+                        value={ this.state.input }
+                        onChange={ this.handleChange }
+                        />
+                </form>
+            </div>
+        )
+    }
+}
