@@ -6,22 +6,26 @@ import { FloatingActionButton } from './Button'
 import SendIcon from 'material-ui/svg-icons/content/send'
 
 export default class MessageField extends Component {
+    static defaultProps = {
+        chatId: 1
+    }
+
     state = {
-        messages: [
-            { id: 0, author: 'Bot', text: "Привет", date: '2019-11-27T22:02:00+03' },
-            { id: 1, author: 'Bot', text: "Как дела?", date: '2019-11-27T22:02:03+03' },
-        ],
         message: '',
     }
 
     messageEndRef = React.createRef()
 
-    componentDidUpdate() {
-        setTimeout(() => {
-            const { messages } = this.state
-            if (messages[messages.length-1].author !== "Bot")
-                this._sendMessage("Bot", "Не приставай ко мне. я робот!")
-        }, 1000)
+    componentDidUpdate(prevProps) {
+        const { messages: prevMessages } = prevProps
+        const { chatId, messages, messageList } = this.props
+        const lastMessageId = messageList[messageList.length - 1]
+        if (lastMessageId &&
+            Object.keys(prevMessages) < Object.keys(messages) &&
+            messages[lastMessageId].author !== "Bot")
+            setTimeout(() => {
+                this.props.sendMessage("Bot", "Не приставай ко мне. я робот!", chatId)
+            }, 1000)
         this.scrollToBottom()
     }
 
@@ -29,20 +33,10 @@ export default class MessageField extends Component {
         this.messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
 
-    _sendMessage(author, text) {
-        this.setState({
-            messages: [...this.state.messages, {
-                id: `f${new Date().getTime().toString(16)}`,
-                author: author,
-                text: text,
-                date: new Date().toISOString(),
-            }],
-        })
-    }
 
     handleSend = (e) => {
         e.preventDefault()
-        this._sendMessage("me", this.state.message)
+        this.props.sendMessage("me", this.state.message)
         this.setState({message: ''})
     }
 
@@ -51,7 +45,8 @@ export default class MessageField extends Component {
     }
 
     render() {
-        const messageElements = this.state.messages.map( message => <Message key={message.id} {...message} />)
+        const { messages, messageList } = this.props
+        const messageElements = messageList.map( id => <Message key={id} {...messages[id]} />)
         return <div className="message-field">
             <div className="message-list-container">
                 <div className="message-list">
