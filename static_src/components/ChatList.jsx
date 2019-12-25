@@ -4,7 +4,11 @@ import { List, ListItem } from 'material-ui/List'
 import ContentSend from 'material-ui/svg-icons/content/send'
 import TextField from './TextField'
 
-export default class ChatList extends React.Component {
+import { addChat } from '../actions/chatActions'
+import { bindActionCreators } from 'redux'
+import connect from 'react-redux/es/connect/connect'
+
+class ChatList extends React.Component {
     static defaultProps = {
         chats: {}
     }
@@ -27,7 +31,7 @@ export default class ChatList extends React.Component {
 
     render() {
         const listElements = Object.keys(this.props.chats).map( id => (
-            <Link to={`/chat/${id}`}>
+            <Link to={`/chat/${id}`} key={id} >
                 <ListItem
                     primaryText={ this.props.chats[id].title }
                     leftIcon={<ContentSend />}
@@ -53,3 +57,11 @@ export default class ChatList extends React.Component {
         )
     }
 }
+
+const mapStateToProps = ({ chatReducer }) => ({
+    chats: chatReducer.chats,
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({ addChat }, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatList)
