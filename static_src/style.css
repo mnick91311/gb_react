@@ -54,15 +54,20 @@
 	flex-grow: 1;
 }
 
-.chat-list {
+.left {
 	width: 30%;
 }
 
-.message-field {
+.right {
 	width: 70%;
+	display: flex;
+}
+
+.message-field {
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
+	flex: 1;
 }
 
 .message-list-container {	
