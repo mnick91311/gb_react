@@ -27,6 +27,14 @@
     bottom: 0;
 }
 
+.message-wrapper {
+	padding: 5px;
+}
+
+.message-wrapper.selected {
+	background-color: gray;
+}
+
 .outside-message {
 	background-color: lightpink;
 	margin-left: auto;

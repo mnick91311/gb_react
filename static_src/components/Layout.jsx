@@ -9,12 +9,12 @@ import { bindActionCreators } from 'redux'
 import connect from 'react-redux/es/connect/connect'
 
 class Layout extends React.Component {
-    static defaultProps = {
-        chatId: 1,
-    }
 
     render() {
-        const chatId = this.props.chatId
+        let {chats, chatId} = this.props
+        if (!chatId || !chats[chatId]) {
+            chatId = Object.keys(chats)[0]
+        }
         return (
             <div className="layout">
                 <div className="header">
@@ -39,7 +39,9 @@ class Layout extends React.Component {
     }
 }
 
-const mapStateToProps = ({}) => ({})
+const mapStateToProps = ({chatReducer}) => ({
+    chats: chatReducer.chats
+})
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
 
