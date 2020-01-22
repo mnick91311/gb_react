@@ -43,7 +43,7 @@ class ChatList extends React.Component {
             <ListItem
                 key={id}
                 style={{
-                    transition: '0.5s linear',
+                    transition: '0.3s linear',
                     backgroundColor: this.props.chats[id].timeoutId ? 'gray' : 'transparent'
                 }}
                 primaryText={ this.props.chats[id].title }

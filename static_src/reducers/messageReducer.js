@@ -1,11 +1,9 @@
 import update from 'react-addons-update'
 import { SEND_MESSAGE, REMOVE_MESSAGE } from '../actions/messageActions'
+import { SUCCESS_CHATS_LOADING } from '../actions/chatActions'
 
 const initialStore = {
-    messages: {
-        "0": { author: 'Bot', text: "Привет", date: '2019-11-27T22:02:00+03' },
-        "1": { author: 'Bot', text: "Как дела?", date: '2019-11-27T22:02:03+03' },
-    },
+    messages: {},
 }
 
 export default function messageReducer(store = initialStore, action) {
@@ -30,6 +28,11 @@ export default function messageReducer(store = initialStore, action) {
                         return copy
                     }
                 }
+            })
+        }
+        case SUCCESS_CHATS_LOADING: {
+            return update(store, {
+                messages: { $set: action.payload.entities.messages },
             })
         }
         default:

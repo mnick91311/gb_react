@@ -7,7 +7,7 @@ export default store => next => action => {
             if (action.sender === 'Bot') {
                 const timeoutId = setTimeout(() => {
                     store.dispatch(blinkOff(action.chatId))
-                }, 1000)
+                }, 300)
                 store.dispatch(blinkOn(action.chatId, timeoutId))
             }
             break;

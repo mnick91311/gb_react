@@ -10,8 +10,11 @@ import Delete from 'material-ui/svg-icons/action/delete'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 
 import { sendMessage, removeMessage } from '../actions/messageActions'
+import { loadChats } from '../actions/chatActions'
 import { bindActionCreators } from 'redux'
 import connect from 'react-redux/es/connect/connect'
+
+import CircularProgress from 'material-ui/CircularProgress'
 
 class MessageField extends Component {
     state = {
@@ -20,6 +23,10 @@ class MessageField extends Component {
     }
 
     messageEndRef = React.createRef()
+
+    componentDidMount() {
+        this.props.loadChats()
+    }
 
     componentDidUpdate(prevProps) {
         const { chats, chatId } = this.props
@@ -82,6 +89,9 @@ class MessageField extends Component {
     }
 
     render() {
+        if (this.props.isLoading) {
+            return <CircularProgress />
+        }
         const { messages, chats, chatId } = this.props
         if (chatId && chats[chatId]) {
             const { messageList } = chats[chatId]
@@ -124,8 +134,9 @@ class MessageField extends Component {
 const mapStateToProps = ({ chatReducer, messageReducer }) => ({
     chats: chatReducer.chats,
     messages: messageReducer.messages,
+    isLoading: chatReducer.isLoading
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ sendMessage, removeMessage }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ sendMessage, removeMessage, loadChats }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageField)
