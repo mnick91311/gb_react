@@ -1,5 +1,6 @@
 #root {
-	max-width: 600px;
+	min-width: 320px;
+	max-width: 900px;
 	margin: 0 auto;
 	height: 100vh;
 }
@@ -60,15 +61,25 @@
 	display: flex;
 	height: auto;
 	flex-grow: 1;
+	overflow: hidden;
 }
 
 .left {
-	width: 30%;
+	display: flex;
+	z-index: 1;
+	height: 100%;
+	position: relative;
 }
 
 .right {
-	width: 70%;
 	display: flex;
+	flex: 1 1 auto;
+}
+
+@media (max-width: 640px) {
+	.left {
+		position: fixed;
+	}
 }
 
 .message-field {
