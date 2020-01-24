@@ -8,7 +8,20 @@ import Profile from './Profile'
 import { bindActionCreators } from 'redux'
 import connect from 'react-redux/es/connect/connect'
 
+import Drawer from 'material-ui/Drawer'
+
+import InstallPopup from './InstallPopup'
+
 class Layout extends React.Component {
+    state = {
+        drawerIsOpen: false
+    }
+
+    handleToggleDrawer = () => {
+        this.setState({
+            drawerIsOpen: !this.state.drawerIsOpen
+        })
+    }
 
     render() {
         let {chats, chatId} = this.props
@@ -17,14 +30,26 @@ class Layout extends React.Component {
         }
         return (
             <div className="layout">
+                <InstallPopup />
                 <div className="header">
-                    <Header 
+                    <Header
                         title="React Chat"
+                        onToggleDrawer={ this.handleToggleDrawer }
                         />
                 </div>
                 <div className="content">
-                    <div className="left">
-                        <ChatList />
+                    <div className="left" style={{
+                            width: this.state.drawerIsOpen ? '256px' : '0px',
+                            transition: 'width 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+                        }}>
+                        <Drawer ref={ this.drawerRef } open={this.state.drawerIsOpen} containerStyle={{
+                                position: 'absolute',
+                                width: 256,
+                                height: '100%',
+                                transition: 'transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms'
+                            }}>
+                            <ChatList />
+                        </Drawer>
                     </div>
                     <div className="right">
                     { this.props.profile ? (
